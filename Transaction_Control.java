@@ -30,10 +30,16 @@ public class Transaction_Control {
                         withdrawStatement.setInt(2, id1);
                         depositStatement.setDouble(1, value);
                         depositStatement.setInt(2, id2);
-                        withdrawStatement.executeUpdate();
-                        depositStatement.executeUpdate();
-                        con.commit();
-                        System.out.println("Transaction successful");
+                        int rowsAffectedwithdrawl=withdrawStatement.executeUpdate();
+                        int rowsAffecteddeosited= depositStatement.executeUpdate();
+                        if(rowsAffecteddeosited>0&&rowsAffectedwithdrawl>0) {
+                            con.commit();
+                            System.out.println("Transaction successful");
+                        }
+                        else {
+                            con.rollback();
+                            System.out.println("Transaction Failed");
+                        }
                     } catch(SQLException e) {
                         con.rollback();
                         System.out.println("Transaction Failed");
